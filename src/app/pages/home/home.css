@@ -1,0 +1,23 @@
+.home {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-family: system-ui, sans-serif;
+  background: #0a0e14;
+  color: #e6edf3;
+  text-align: center;
+  padding: 24px;
+}
+
+.test-link {
+  color: #ff5f6d;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.test-link:hover {
+  text-decoration: underline;
+}

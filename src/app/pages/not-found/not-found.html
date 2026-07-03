@@ -1,0 +1,45 @@
+<main class="scene">
+  <div class="glow" aria-hidden="true"></div>
+
+  <section class="terminal" role="alert" aria-live="polite">
+    <header class="terminal__bar">
+      <span class="dot dot--red"></span>
+      <span class="dot dot--yellow"></span>
+      <span class="dot dot--green"></span>
+      <span class="terminal__title">angular-training-capstone — zsh</span>
+    </header>
+
+    <div class="terminal__body">
+      <p class="line">
+        <span class="prompt">➜</span>
+        <span class="cmd">ng serve --open route="{{ attemptedPath() }}"</span>
+      </p>
+
+      <p class="line line--error">
+        <span class="glyph">✖</span> Error: Cannot GET '{{ attemptedPath() }}'
+      </p>
+      <p class="line line--muted">&nbsp;&nbsp;at AppRoutingModule (app.routes.ts:1)</p>
+      <p class="line line--muted">&nbsp;&nbsp;Route not found in the routing table.</p>
+
+      <p class="line">&nbsp;</p>
+
+      <h1 class="code404" aria-label="404">
+        <span>4</span><span>0</span><span>4</span>
+      </h1>
+
+      <p class="line subtitle">This route doesn't exist — yet. Let's get you back to known territory.</p>
+
+      <p class="line">
+        <span class="prompt">➜</span>
+        <span class="cmd">cd</span>
+        <span class="cursor" aria-hidden="true"></span>
+      </p>
+
+      <button class="btn" type="button" (click)="goHome()">
+        Return home <span class="btn__arrow">→</span>
+      </button>
+    </div>
+  </section>
+
+  <p class="hint">angular-training-capstone · 404 · wildcard route</p>
+</main>
