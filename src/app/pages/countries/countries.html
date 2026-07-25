@@ -1,0 +1,54 @@
+<main class="page">
+  <div class="glow" aria-hidden="true"></div>
+
+  <header class="page-header">
+    <p class="eyebrow">World Factbook</p>
+    <h1 class="title">Countries of the World</h1>
+    <p class="subtitle" *ngIf="!loading() && !error()">
+      Showing <strong>{{ countryCount() }}</strong> countries — name, region, capital and population at a glance.
+    </p>
+  </header>
+
+  <!-- Loading state -->
+  <div class="state state--loading" *ngIf="loading()" role="status" aria-live="polite">
+    <span class="spinner" aria-hidden="true"></span>
+    <p>Fetching countries…</p>
+  </div>
+
+  <!-- Error state -->
+  <div class="state state--error" *ngIf="error() as message" role="alert">
+    <p>{{ message }}</p>
+    <button class="retry-btn" type="button" (click)="fetchCountries()">Try again</button>
+  </div>
+
+  <!-- Data table -->
+  <section class="table-wrap" *ngIf="!loading() && !error()">
+    <div class="table" role="table" aria-label="List of countries">
+      <div class="row row--head" role="row">
+        <span class="cell cell--name" role="columnheader">Name</span>
+        <span class="cell cell--region" role="columnheader">Region</span>
+        <span class="cell cell--capital" role="columnheader">Capital</span>
+        <span class="cell cell--population" role="columnheader">Population</span>
+      </div>
+
+      <div class="row" role="row" *ngFor="let country of sortedCountries()">
+        <span class="cell cell--name" role="cell" data-label="Name">
+          <span class="flag" aria-hidden="true">{{ country.flag }}</span>
+          <span class="name-text">{{ country.name }}</span>
+        </span>
+
+        <span class="cell cell--region" role="cell" data-label="Region">
+          <span class="badge">{{ country.region }}</span>
+        </span>
+
+        <span class="cell cell--capital" role="cell" data-label="Capital">
+          {{ country.capital || '—' }}
+        </span>
+
+        <span class="cell cell--population" role="cell" data-label="Population">
+          {{ populationInMillions(country.population) }}M
+        </span>
+      </div>
+    </div>
+  </section>
+</main>
