@@ -1,0 +1,36 @@
+<main class="page">
+  <div class="glow" aria-hidden="true"></div>
+
+  <a class="back-link" routerLink="/">← Back to countries</a>
+
+  <!-- Loading state -->
+  <div class="state state--loading" *ngIf="loading()" role="status" aria-live="polite">
+    <span class="spinner" aria-hidden="true"></span>
+    <p>Fetching weather for {{ capitalName() || 'this city' }}…</p>
+  </div>
+
+  <!-- Error state -->
+  <div class="state state--error" *ngIf="!loading() && error() as message" role="alert">
+    <p>{{ message }}</p>
+    <button class="retry-btn" type="button" (click)="retry()" *ngIf="capitalName()">
+      Try again
+    </button>
+  </div>
+
+  <!-- Weather card -->
+  <section class="weather-card" *ngIf="!loading() && !error() && weather() as w">
+    <p class="eyebrow">Current Weather</p>
+    <h1 class="location">
+      {{ countryName() }}<span class="dot">·</span>{{ capitalName() }}
+    </h1>
+
+    <p class="datetime">{{ formattedDateTime() }}</p>
+
+    <div class="temp-row">
+      <span class="icon" aria-hidden="true">{{ conditionText()?.icon }}</span>
+      <span class="temp">{{ temperatureCelsius() }}°C</span>
+    </div>
+
+    <p class="condition" *ngIf="conditionText() as condition">{{ condition.label }}</p>
+  </section>
+</main>

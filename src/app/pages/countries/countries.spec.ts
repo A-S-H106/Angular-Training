@@ -1,6 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
+import { provideRouter } from '@angular/router';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { Countries } from './countries';
 import { Country } from '../../core/models/country.model';
@@ -28,7 +30,12 @@ describe('Countries', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [Countries],
-      providers: [provideHttpClient(), provideHttpClientTesting()],
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        provideRouter([]),
+        provideNoopAnimations(),
+      ],
     }).compileComponents();
 
     httpMock = TestBed.inject(HttpTestingController);
@@ -46,7 +53,7 @@ describe('Countries', () => {
     expect(fixture.componentInstance).toBeTruthy();
   });
 
-  it('should load and sort countries alphabetically by name', () => {
+  it('should load and sort countries alphabetically by name into the table data source', () => {
     const fixture = TestBed.createComponent(Countries);
     const component = fixture.componentInstance;
     fixture.detectChanges();
@@ -56,10 +63,10 @@ describe('Countries', () => {
     fixture.detectChanges();
 
     expect(component.loading()).toBeFalse();
-    expect(component.sortedCountries().map((c) => c.name)).toEqual(['Brazil', 'Germany']);
+    expect(component.dataSource.data.map((c) => c.name)).toEqual(['Brazil', 'Germany']);
   });
 
-  it('should set an error message when the request fails', () => {
+  it('should set an error flag when the request fails', () => {
     const fixture = TestBed.createComponent(Countries);
     const component = fixture.componentInstance;
     fixture.detectChanges();
@@ -69,7 +76,20 @@ describe('Countries', () => {
     fixture.detectChanges();
 
     expect(component.loading()).toBeFalse();
-    expect(component.error()).toBeTruthy();
+    expect(component.hasError()).toBeTrue();
+  });
+
+  it('should filter the table data source by typed name', () => {
+    const fixture = TestBed.createComponent(Countries);
+    const component = fixture.componentInstance;
+    fixture.detectChanges();
+
+    const req = httpMock.expectOne('https://worldfactbook.io/api/v1/countries');
+    req.flush(mockCountries);
+    fixture.detectChanges();
+
+    component.onFilterInput('ger');
+    expect(component.dataSource.filteredData.map((c) => c.name)).toEqual(['Germany']);
   });
 
   it('should format population in millions rounded to one decimal', () => {
