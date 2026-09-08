@@ -8,7 +8,7 @@ import { Country } from '../models/country.model';
   providedIn: 'root',
 })
 export class CountryService {
-  private readonly countriesUrl = 'https://worldfactbook.io/api/v1/countries';
+  private readonly countriesUrl = 'https://worldfactbook.io/api/v1/countries/';
 
   constructor(private http: HttpClient) {}
 

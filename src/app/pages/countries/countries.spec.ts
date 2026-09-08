@@ -2,7 +2,6 @@ import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
 import { provideRouter } from '@angular/router';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { Countries } from './countries';
 import { Country } from '../../core/models/country.model';
@@ -34,7 +33,6 @@ describe('Countries', () => {
         provideHttpClient(),
         provideHttpClientTesting(),
         provideRouter([]),
-        provideNoopAnimations(),
       ],
     }).compileComponents();
 
@@ -48,7 +46,7 @@ describe('Countries', () => {
   it('should create', () => {
     const fixture = TestBed.createComponent(Countries);
     fixture.detectChanges();
-    const req = httpMock.expectOne('https://worldfactbook.io/api/v1/countries');
+    const req = httpMock.expectOne('https://worldfactbook.io/api/v1/countries/');
     req.flush(mockCountries);
     expect(fixture.componentInstance).toBeTruthy();
   });
@@ -58,11 +56,11 @@ describe('Countries', () => {
     const component = fixture.componentInstance;
     fixture.detectChanges();
 
-    const req = httpMock.expectOne('https://worldfactbook.io/api/v1/countries');
+    const req = httpMock.expectOne('https://worldfactbook.io/api/v1/countries/');
     req.flush(mockCountries);
     fixture.detectChanges();
 
-    expect(component.loading()).toBeFalse();
+    expect(component.loading()).toBeFalsy();
     expect(component.dataSource.data.map((c) => c.name)).toEqual(['Brazil', 'Germany']);
   });
 
@@ -71,12 +69,12 @@ describe('Countries', () => {
     const component = fixture.componentInstance;
     fixture.detectChanges();
 
-    const req = httpMock.expectOne('https://worldfactbook.io/api/v1/countries');
+    const req = httpMock.expectOne('https://worldfactbook.io/api/v1/countries/');
     req.error(new ProgressEvent('Network error'));
     fixture.detectChanges();
 
-    expect(component.loading()).toBeFalse();
-    expect(component.hasError()).toBeTrue();
+    expect(component.loading()).toBeFalsy();
+    expect(component.hasError()).toBeTruthy();
   });
 
   it('should filter the table data source by typed name', () => {
@@ -84,7 +82,7 @@ describe('Countries', () => {
     const component = fixture.componentInstance;
     fixture.detectChanges();
 
-    const req = httpMock.expectOne('https://worldfactbook.io/api/v1/countries');
+    const req = httpMock.expectOne('https://worldfactbook.io/api/v1/countries/');
     req.flush(mockCountries);
     fixture.detectChanges();
 
@@ -97,7 +95,7 @@ describe('Countries', () => {
     const component = fixture.componentInstance;
     fixture.detectChanges();
 
-    const req = httpMock.expectOne('https://worldfactbook.io/api/v1/countries');
+    const req = httpMock.expectOne('https://worldfactbook.io/api/v1/countries/');
     req.flush(mockCountries);
 
     expect(component.populationInMillions('34678345')).toBe('34.7');

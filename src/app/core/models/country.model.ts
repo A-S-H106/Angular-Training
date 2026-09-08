@@ -1,6 +1,6 @@
 /**
  * Shape of a single record returned by
- * https://worldfactbook.io/api/v1/countries
+ * https://worldfactbook.io/api/v1/countries/
  *
  * Only the fields we actually use are typed strictly; the rest are
  * marked optional/unknown so the app doesn't break if the API adds
